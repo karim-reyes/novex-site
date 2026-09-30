@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Panel interno de reclutamiento y seguimiento de candidatos de Novex.">
+  <title>Novex | Reclutamiento</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23171717'/%3E%3Cpath d='M17 47V17h8l14 18V17h8v30h-8L25 29v18z' fill='%23c9f04d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="auth-shell" id="authShell">
+    <section class="auth-brand" aria-label="Novex">
+      <div class="auth-brand-copy">
+        <div class="brand"><div class="brand-mark">N</div><div class="brand-name">NOVEX</div></div>
+        <p class="eyebrow">Reclutamiento</p>
+        <h1>El trabajo del equipo, en un solo lugar.</h1>
+        <p>Acceso para el equipo de RR. HH. Las cuentas nuevas requieren aprobacion.</p>
+      </div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-box" id="authBox">
+        <div class="auth-tabs" role="tablist" aria-label="Acceso">
+          <button class="auth-tab active" data-auth-view="login" role="tab" aria-selected="true">Ingresar</button>
+          <button class="auth-tab" data-auth-view="register" role="tab" aria-selected="false">Crear cuenta</button>
+        </div>
+        <form id="loginForm" class="auth-form">
+          <div><p class="eyebrow">Bienvenido</p><h2>Accede a Novex</h2></div>
+          <label class="field"><span>Correo</span><input id="loginEmail" type="email" autocomplete="email" required></label>
+          <label class="field"><span>Contrasena</span><input id="loginPassword" type="password" autocomplete="current-password" minlength="6" required></label>
+          <p class="form-message" id="loginMessage" role="alert"></p>
+          <button class="btn primary auth-submit" type="submit">Ingresar</button>
+        </form>
+        <form id="registerForm" class="auth-form" hidden>
+          <div><p class="eyebrow">Solicitud de acceso</p><h2>Crea tu cuenta</h2></div>
+          <label class="field"><span>Nombre completo</span><input id="registerName" autocomplete="name" required></label>
+          <label class="field"><span>Correo</span><input id="registerEmail" type="email" autocomplete="email" required></label>
+          <label class="field"><span>Contrasena</span><input id="registerPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+          <p class="form-message" id="registerMessage" role="alert"></p>
+          <button class="btn primary auth-submit" type="submit">Solicitar acceso</button>
+        </form>
+      </div>
+      <div class="auth-box pending-box" id="pendingBox" hidden>
+        <div class="pending-mark">N</div>
+        <p class="eyebrow">Cuenta pendiente</p>
+        <h2>Tu solicitud esta en revision</h2>
+        <p id="pendingCopy">Un administrador debe activar tu acceso antes de que puedas consultar informacion de reclutamiento.</p>
+        <div class="pending-actions"><button class="btn primary" id="retryAccess">Comprobar acceso</button><button class="btn secondary" id="pendingLogout">Cerrar sesion</button></div>
+      </div>
+      <div class="auth-box" id="inviteBox" hidden>
+        <form id="inviteForm" class="auth-form">
+          <div><p class="eyebrow">Invitacion al equipo</p><h2>Completa tu cuenta</h2></div>
+          <p class="auth-helper">Define una contrasena para volver a ingresar a Novex despues de aceptar esta invitacion.</p>
+          <label class="field"><span>Nueva contrasena</span><input id="invitePassword" type="password" autocomplete="new-password" minlength="8" required></label>
+          <label class="field"><span>Confirmar contrasena</span><input id="invitePasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label>
+          <p class="form-message" id="inviteMessage" role="alert"></p>
+          <button class="btn primary auth-submit" type="submit">Completar invitacion</button>
+        </form>
+      </div>
+      <div class="auth-box loading-box" id="bootBox">
+        <span class="spinner" aria-hidden="true"></span><strong>Conectando con Novex</strong>
+      </div>
+    </section>
+  </main>
+
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar" aria-label="Navegacion principal">
+      <div class="brand"><div class="brand-mark">N</div><div class="brand-name">NOVEX</div></div>
+      <nav class="nav-list" id="mainNav"></nav>
+      <div class="sidebar-footer">
+        <div class="user"><div class="avatar" id="userAvatar">HR</div><div class="user-copy"><strong id="userName">Equipo Novex</strong><span>Equipo de RR. HH.</span></div><button class="logout-btn" id="logoutBtn" aria-label="Cerrar sesion" title="Cerrar sesion">Salir</button></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title-group"><p class="eyebrow" id="pageEyebrow">Operaciones / Pipeline</p><h1 class="page-title" id="pageTitle">Pipeline de candidatos</h1></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="notificationsBtn" aria-label="Notificaciones" title="Notificaciones"></button>
+          <button class="btn primary" id="primaryAction"><span>Nueva vacante</span></button>
+        </div>
+      </header>
+      <div class="content" id="viewRoot"></div>
+    </main>
+  </div>
+
+  <div class="compare-tray" id="compareTray" aria-live="polite"></div>
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="candidateDrawer" aria-label="Detalle del candidato"></aside>
+  <section class="modal" id="moveModal" role="dialog" aria-modal="true" aria-labelledby="moveTitle"></section>
+  <section class="modal wide" id="compareModal" role="dialog" aria-modal="true" aria-labelledby="compareTitle"></section>
+  <section class="modal" id="vacancyModal" role="dialog" aria-modal="true" aria-labelledby="vacancyTitle"></section>
+  <section class="modal" id="filterModal" role="dialog" aria-modal="true" aria-labelledby="filterTitle"></section>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
